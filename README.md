@@ -48,7 +48,15 @@ suno-ai-music-prompts/
 ├── image/
 └── spectrogram/
 ```
+---
 
+---
+## Step 5: Unzip the Dataset
+run the script and the json will be imported to a suno.db sqlite file
+
+```bash
+python  python .\json_import_sqlite.py .\suno-ai-music-prompts\data\
+```
 ---
 
 This project provides tools to analyze and optimize Suno AI prompts. Feel free to explore the dataset and contribute improvements to the code!
@@ -58,4 +66,4 @@ This project provides tools to analyze and optimize Suno AI prompts. Feel free t
 
 **Senthil Nayagam**  
 Email: senthil @ muonium.ai
-[X ](https://x.com/senthilnayagam)
+X: [senthilnayagam ](https://x.com/senthilnayagam)
