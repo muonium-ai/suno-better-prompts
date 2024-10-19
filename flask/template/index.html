@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Search</title>
+</head>
+<body>
+    <h1>Song Search</h1>
+
+    <form method="POST">
+        <input type="text" name="search_query" placeholder="Search by title or lyrics" value="{{ search_query }}">
+        
+        <select name="language">
+            <option value="">All Languages</option>
+            {% for language in languages %}
+                <option value="{{ language.language_code }}" 
+                    {% if language.language_code == selected_language %} selected {% endif %}>
+                    {{ language.language }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="model">
+            <option value="">All Models</option>
+            {% for model in models %}
+                <option value="{{ model.model_name }}" 
+                    {% if model.model_name == selected_model %} selected {% endif %}>
+                    {{ model.model_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <hr>
+
+    {% if songs %}
+        <h2>Search Results:</h2>
+        <ul>
+            {% for song in songs %}
+                <li>
+                    <h3>{{ song.title }}</h3>
+                    <img src="{{ song.image_url }}" alt="Song Image" width="200">
+                    <p><strong>Duration:</strong> {{ song.meta_duration }} seconds</p>
+                    <p><strong>Play Count:</strong> {{ song.play_count }}</p>
+                    <p><strong>Language:</strong> {{ song.meta_prompt_lang }}</p>
+                    <p><strong>Model:</strong> {{ song.model_name }}</p>
+                    <p><strong>Lyrics:</strong> {{ song.meta_prompt }}</p>
+                    <audio controls>
+                        <source src="{{ song.audio_url }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No songs found matching your search criteria.</p>
+    {% endif %}
+</body>
+</html>
