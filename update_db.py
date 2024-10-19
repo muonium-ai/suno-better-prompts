@@ -1,5 +1,10 @@
 import sqlite3
+import os
 import pandas as pd
+
+# Paths for local content
+IMAGE_PATH = "./suno-ai-music-prompts/image"
+AUDIO_PATH = "./suno-ai-music-prompts/audio"
 
 # Load the language codes CSV
 csv_file_path = "language-codes.csv"
@@ -8,6 +13,49 @@ language_codes_df = pd.read_csv(csv_file_path)  # Ensure the CSV is in the same 
 # Connect to the SQLite database
 conn = sqlite3.connect('suno.db')
 cursor = conn.cursor()
+
+# Helper function to check if local files exist
+def file_exists(song_id, content_type):
+    path = f"{IMAGE_PATH}/{song_id}.jpeg" if content_type == "image" else f"{AUDIO_PATH}/{song_id}.mp3"
+    return os.path.exists(path)
+
+# Drop and recreate the json_data table with new boolean columns
+cursor.execute('ALTER TABLE json_data RENAME TO json_data_old')
+cursor.execute('''
+    CREATE TABLE json_data (
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        meta_prompt_lang TEXT,
+        model_name TEXT,
+        meta_duration REAL,
+        play_count INTEGER,
+        meta_prompt TEXT,
+        audio_url TEXT,
+        image_url TEXT,
+        local_image BOOLEAN DEFAULT FALSE,
+        local_audio BOOLEAN DEFAULT FALSE
+    )
+''')
+
+# Copy data from old table to new table with updated local file checks
+rows = cursor.execute('SELECT id FROM json_data_old').fetchall()
+data_to_insert = [(row[0], file_exists(row[0], "image"), file_exists(row[0], "audio")) for row in rows]
+
+for row_id, local_image, local_audio in data_to_insert:
+    cursor.execute('''
+        INSERT INTO json_data (
+            id, title, meta_prompt_lang, model_name, meta_duration, 
+            play_count, meta_prompt, audio_url, image_url, local_image, local_audio
+        )
+        SELECT 
+            id, title, meta_prompt_lang, model_name, meta_duration, 
+            play_count, meta_prompt, audio_url, image_url, ?, ?
+        FROM json_data_old
+        WHERE id = ?
+    ''', (local_image, local_audio, row_id))
+
+# Drop the old table
+cursor.execute('DROP TABLE json_data_old')
 
 # Drop and recreate the languages table
 cursor.execute('DROP TABLE IF EXISTS languages')
@@ -64,7 +112,7 @@ cursor.execute('''
 # Commit the changes and close the connection
 conn.commit()
 
-# Optional: Display the contents of both tables for verification
+# Optional: Display the contents of the languages and models tables for verification
 print("Languages Table:")
 cursor.execute("SELECT * FROM languages")
 print(cursor.fetchall())
