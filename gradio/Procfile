@@ -1,0 +1,2 @@
+flask-server: python static-server.py
+gradio-app: python suno-gradio.py
