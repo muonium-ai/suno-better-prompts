@@ -21,6 +21,7 @@ The dataset is over 100GB and comes in a compressed format. Make sure you have a
 1. Create a new Conda environment:
    ```bash
    conda create -n suno -y
+   conda activate suno
    ```
 2. Install the required dependencies:
    ```bash
