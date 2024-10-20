@@ -21,7 +21,7 @@ def fetch_songs(search_query, limit):
     query = """
         SELECT id, title, audio_url, image_url, local_audio, local_image
         FROM json_data
-        WHERE title LIKE ? OR meta_prompt LIKE ?
+        WHERE title LIKE ? OR meta_prompt LIKE ? ORDER BY RANDOM()
         LIMIT ?
     """
     params = [f'%{search_query}%', f'%{search_query}%', limit]
