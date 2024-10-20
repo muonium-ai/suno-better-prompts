@@ -3,6 +3,35 @@
 
 This project aims to determine which prompts perform better with Suno AI, using a Kaggle dataset along with supporting code.
 
+## Quick Explore Prompts with Gradio App
+
+### How to Run
+
+1. **Download the SQLite Database**  
+   Get the database from the [Google Drive link](https://github.com/muonium-ai/suno-better-prompts/releases) and extract it into the **root folder** of the Git repository.
+
+2. **Set up the Environment and Install Dependencies**  
+   Create a new Conda environment, switch to the `gradio` folder, and install the necessary dependencies:
+
+   ```bash
+   conda create -n suno -y
+   conda activate suno
+   cd gradio
+   pip install -r requirements.txt
+   python suno-gradio.py
+
+
+### Access the App
+Open your browser and visit http://127.0.0.1:7860 to explore the app.
+
+Search for songs by title or prompt.
+Apply filters by language or model.
+Optionally, choose to display only local content, you have to download the dataset for this feature to work.
+
+
+
+# Full Steps
+
 ## Step 1: Download the Dataset
 The dataset is over 100GB and comes in a compressed format. Make sure you have at least **200GB of free space** available for both downloading and extraction.
 
