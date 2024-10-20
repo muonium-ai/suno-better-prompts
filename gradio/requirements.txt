@@ -1,3 +1,5 @@
 gradio
 flask
 honcho
+beautifulsoup4
+requests
