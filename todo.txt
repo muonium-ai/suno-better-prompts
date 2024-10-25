@@ -1,5 +1,5 @@
 
-1) process all the json files and save in a sqlite database
-2) extract key features like languages, author, genre
+1) process all the json files and save in a sqlite database - done
+2) extract key features like languages, author, genre - done
 3) implement full text search for lyrics, title etc 
-4) web interface to search songs, play songs, rate songs
+4) web interface to search songs, play songs, rate songs - gradio version done, flask version planned
